@@ -1,0 +1,32 @@
+- name: "Using localhost"
+  hosts: ["localhost"]
+  vars_files:
+    - "./variable.yaml"
+
+  tasks:
+     - name: "install some software"
+       yum:
+         name: "{{ software_1 }}"
+         state: present
+       register: task1_output
+
+     - name: "start httpd service"
+       service:
+         name: "{{ software_1 }}"
+         state: restarted
+       register: task2_output
+
+     - name: "printing the output of task 1"
+       debug:
+         msg: "{{ task1_output }}"
+
+     - name: "printing the output of task 2"
+       debug:
+         msg: "{{ newvar }}"
+       ignore_errors: yes
+
+     - name: "Installing php"
+       yum:
+         name: "{{ software_2 }}"
+         state: present ## installed
+         #state: absent ## uninstall
